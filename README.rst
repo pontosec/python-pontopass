@@ -1,4 +1,4 @@
 python-pontopass
 ================
 
-Pontopass: integração com python
+Pontopass: Python client
