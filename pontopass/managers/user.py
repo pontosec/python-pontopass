@@ -9,8 +9,16 @@ class UserManager(Manager):
         if name is not None:
             frags += [name]
 
-        path = self.build_path(frags=frags)
-        response = self.request(path=path)
-        print response
-        print response.json()
-        return response
+        obj = self.request(frags=frags)
+        self.parse_status(obj.status)
+        return obj
+
+    def delete(self, user):
+        frags = ['manage', 'user', 'delete', user]
+        obj = self.request(frags=frags)
+        self.parse_status(obj.status)
+
+        if obj.status == 0:
+            return True
+
+        return False
