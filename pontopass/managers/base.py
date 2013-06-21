@@ -65,4 +65,6 @@ class Manager(object):
         return url_join(*frags)
 
     def parse_dict(self, dict):
+        if isinstance(dict, list):
+            return map(dict2obj, dict)
         return dict2obj(dict)

@@ -4,3 +4,4 @@ build/
 docs/_build/
 *.egg-info
 *.egg
+.DS_Store

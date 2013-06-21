@@ -27,6 +27,8 @@ def url_join(base, *args):
             arg = arg.encode('utf8')
         elif isinstance(arg, str):
             arg.decode('utf8')
+        else:
+            arg = str(arg)
         _args.append(arg)
 
     path = posixpath.join(path, *_args)

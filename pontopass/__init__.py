@@ -3,6 +3,11 @@
 
 class Pontopass(object):
 
+    PHONE_CALL = 1
+    SMS = 2
+    MOBILE_TOKEN = 3
+    MOBILE_AUTHENTICATION = MOBILE_AUTH = 4
+
     def __init__(self, api_user, api_pass, api_host='api.pontopass.com', api_secure=True):
         self.api_host = api_host
         self.api_user = api_user
