@@ -22,3 +22,15 @@ class UserDeletingError(PontopassBaseException):
 
 class UserDoesNotExist(PontopassBaseException):
     pass
+
+
+class SessionCreatingError(PontopassBaseException):
+    pass
+
+
+class SessionError(PontopassBaseException):
+    pass
+
+
+class LoginError(PontopassBaseException):
+    pass

@@ -8,6 +8,9 @@ class Pontopass(object):
     MOBILE_TOKEN = 3
     MOBILE_AUTHENTICATION = MOBILE_AUTH = 4
 
+    WITHOUT_WIDGET = 0
+    WITH_WIDGET = 1
+
     def __init__(self, api_user, api_pass, api_host='api.pontopass.com', api_secure=True):
         self.api_host = api_host
         self.api_user = api_user

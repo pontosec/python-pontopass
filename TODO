@@ -1,0 +1,2 @@
+- create more tests.
+- get user_ip and user_agent on __init__ in Pontopass class.

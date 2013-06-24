@@ -79,6 +79,7 @@ class ClientTestCase(unittest.TestCase):
     def test_add_device(self):
         user = u'vinicius_{0}'.format(randint(0, 9999))
         name = u'Vinícius Cainelli'
+        mobile_number = randint(10000000000, 99999999999)
 
         response = self.pontopass.user.add(user=user, name=name)
 
@@ -87,7 +88,7 @@ class ClientTestCase(unittest.TestCase):
 
         self.users_to_remove.append(user)
 
-        response2 = self.pontopass.user(user).device.add(Pontopass.SMS, '1681813981', 'iphone')
+        response2 = self.pontopass.user(user).device.add(Pontopass.SMS, mobile_number, 'desc_{0}'.format(randint(0, 9999)))
 
         self.assertTrue(response2.method_id)
         self.assertTrue(isinstance(response2, Object))
@@ -96,7 +97,7 @@ class ClientTestCase(unittest.TestCase):
     def test_list_devices(self):
         user = u'vinicius_{0}'.format(randint(0, 9999))
         name = u'Vinícius Cainelli'
-        mobile_namber = randint(10000000000, 99999999999)
+        mobile_number = randint(10000000000, 99999999999)
 
         response = self.pontopass.user.add(user=user, name=name)
 
@@ -105,7 +106,7 @@ class ClientTestCase(unittest.TestCase):
 
         self.users_to_remove.append(user)
 
-        response2 = self.pontopass.user(user).device.add(Pontopass.SMS, mobile_namber, 'desc_{0}'.format(randint(0, 9999)))
+        response2 = self.pontopass.user(user).device.add(Pontopass.SMS, mobile_number, 'desc_{0}'.format(randint(0, 9999)))
 
         self.assertTrue(response2.method_id)
         self.assertTrue(isinstance(response2, Object))
@@ -118,7 +119,7 @@ class ClientTestCase(unittest.TestCase):
     def test_remove_devices(self):
         user = u'vinicius_{0}'.format(randint(0, 9999))
         name = u'Vinícius Cainelli'
-        mobile_namber = randint(10000000000, 99999999999)
+        mobile_number = randint(10000000000, 99999999999)
 
         response = self.pontopass.user.add(user=user, name=name)
 
@@ -127,7 +128,7 @@ class ClientTestCase(unittest.TestCase):
 
         self.users_to_remove.append(user)
 
-        response2 = self.pontopass.user(user).device.add(Pontopass.SMS, mobile_namber, 'desc_{0}'.format(randint(0, 9999)))
+        response2 = self.pontopass.user(user).device.add(Pontopass.SMS, mobile_number, 'desc_{0}'.format(randint(0, 9999)))
 
         self.assertTrue(response2.method_id)
         self.assertTrue(isinstance(response2, Object))
@@ -141,3 +142,219 @@ class ClientTestCase(unittest.TestCase):
         for device in response3:
             response4 = self.pontopass.user(user).device.delete(device.id)
             self.assertTrue(response4)
+
+    def test_session_init(self):
+        user = u'vinicius_{0}'.format(randint(0, 9999))
+        name = u'Vinícius Cainelli'
+        user_ip = '127.0.0.1'
+        user_agent = 'iphone'
+
+        response = self.pontopass.user.add(user=user, name=name)
+
+        self.assertTrue(response.id)
+        self.assertTrue(isinstance(response, Object))
+
+        self.users_to_remove.append(user)
+
+        response = self.pontopass.session.init(user, user_ip=user_ip, user_agent=user_agent)
+
+        self.assertTrue(response)
+
+    def test_list_session_devices(self):
+        user = u'vinicius_{0}'.format(randint(0, 9999))
+        name = u'Vinícius Cainelli'
+        mobile_number = randint(10000000000, 99999999999)
+        response = self.pontopass.user.add(user=user, name=name)
+        user_ip = '127.0.0.1'
+        user_agent = 'iphone'
+
+        self.assertTrue(response.id)
+        self.assertTrue(isinstance(response, Object))
+
+        self.users_to_remove.append(user)
+
+        response2 = self.pontopass.user(user).device.add(Pontopass.SMS, mobile_number, 'desc_{0}'.format(randint(0, 9999)))
+
+        self.assertTrue(response2.method_id)
+        self.assertTrue(isinstance(response2, Object))
+
+        response3 = self.pontopass.user(user).device.list()
+
+        self.assertTrue(isinstance(response3, list))
+        self.assertTrue(response3)
+
+        response4 = self.pontopass.session.init(user, user_ip=user_ip, user_agent=user_agent)
+        self.assertTrue(response4)
+
+        session_id = response4
+
+        response5 = self.pontopass.session(session_id).device.list(user_ip=user_ip, user_agent=user_agent)
+
+        self.assertTrue(isinstance(response5, list))
+        self.assertTrue(response5)
+
+    def test_ask_session_device(self):
+        user = u'vinicius_{0}'.format(randint(0, 9999))
+        name = u'Vinícius Cainelli'
+        mobile_number = randint(10000000000, 99999999999)
+        user_ip = '127.0.0.1'
+        user_agent = 'iphone'
+
+        response = self.pontopass.user.add(user=user, name=name)
+
+        self.assertTrue(response.id)
+        self.assertTrue(isinstance(response, Object))
+
+        self.users_to_remove.append(user)
+
+        response2 = self.pontopass.user(user).device.add(Pontopass.SMS, mobile_number, 'desc_{0}'.format(randint(0, 9999)))
+
+        self.assertTrue(response2.method_id)
+        self.assertTrue(isinstance(response2, Object))
+
+        response3 = self.pontopass.user(user).device.list()
+
+        self.assertTrue(isinstance(response3, list))
+        self.assertTrue(response3)
+
+        response4 = self.pontopass.session.init(user, user_ip=user_ip, user_agent=user_agent)
+        self.assertTrue(response4)
+
+        session_id = response4
+
+        response5 = self.pontopass.session(session_id).device.list(user_ip=user_ip, user_agent=user_agent)
+
+        self.assertTrue(isinstance(response5, list))
+        self.assertTrue(response5)
+
+        for device in response5:
+            response6 = self.pontopass.session(session_id).device.ask(device_id=device.id, user_ip=user_ip, user_agent=user_agent)
+            self.assertTrue(response6)
+
+    def test_answer_session_device(self):
+        user = u'vinicius_{0}'.format(randint(0, 9999))
+        name = u'Vinícius Cainelli'
+        mobile_number = raw_input('Type the mobile number with DDI and DDD (eg: 551681813981): ')
+        user_ip = '127.0.0.1'
+        user_agent = 'iphone'
+
+        response = self.pontopass.user.add(user=user, name=name)
+
+        self.assertTrue(response.id)
+        self.assertTrue(isinstance(response, Object))
+
+        self.users_to_remove.append(user)
+
+        response2 = self.pontopass.user(user).device.add(Pontopass.SMS, mobile_number, 'desc_{0}'.format(randint(0, 9999)))
+
+        self.assertTrue(response2.method_id)
+        self.assertTrue(isinstance(response2, Object))
+
+        response3 = self.pontopass.user(user).device.list()
+
+        self.assertTrue(isinstance(response3, list))
+        self.assertTrue(response3)
+
+        response4 = self.pontopass.session.init(user, user_ip=user_ip, user_agent=user_agent)
+        self.assertTrue(response4)
+
+        session_id = response4
+
+        response5 = self.pontopass.session(session_id).device.list(user_ip=user_ip, user_agent=user_agent)
+        for device in response5:
+            response6 = self.pontopass.session(session_id).device.ask(device_id=device.id, user_ip=user_ip, user_agent=user_agent)
+            self.assertTrue(response6)
+
+            answer = raw_input('Answer: ')
+            response7 = self.pontopass.session(session_id).device.answer(code=answer, type=Pontopass.SMS, user_ip=user_ip, user_agent=user_agent)
+
+            self.assertTrue(isinstance(response7, Object))
+            self.assertTrue(response7)
+
+    def test_wrong_answer_session_device(self):
+        user = u'vinicius_{0}'.format(randint(0, 9999))
+        name = u'Vinícius Cainelli'
+        mobile_number = randint(10000000000, 99999999999)
+        user_ip = '127.0.0.1'
+        user_agent = 'iphone'
+
+        response = self.pontopass.user.add(user=user, name=name)
+
+        self.assertTrue(response.id)
+        self.assertTrue(isinstance(response, Object))
+
+        self.users_to_remove.append(user)
+
+        response2 = self.pontopass.user(user).device.add(Pontopass.SMS, mobile_number, 'desc_{0}'.format(randint(0, 9999)))
+
+        self.assertTrue(response2.method_id)
+        self.assertTrue(isinstance(response2, Object))
+
+        response3 = self.pontopass.user(user).device.list()
+
+        self.assertTrue(isinstance(response3, list))
+        self.assertTrue(response3)
+
+        response4 = self.pontopass.session.init(user, user_ip=user_ip, user_agent=user_agent)
+        self.assertTrue(response4)
+
+        session_id = response4
+
+        response5 = self.pontopass.session(session_id).device.list(user_ip=user_ip, user_agent=user_agent)
+
+        self.assertTrue(isinstance(response5, list))
+        self.assertTrue(response5)
+
+        for device in response5:
+            response6 = self.pontopass.session(session_id).device.ask(device_id=device.id, user_ip=user_ip, user_agent=user_agent)
+            self.assertTrue(response6)
+
+            with self.assertRaises(exceptions.LoginError):
+                answer = '123123'  # wrong
+                self.pontopass.session(session_id).device.answer(code=answer, type=Pontopass.SMS, user_ip=user_ip, user_agent=user_agent)
+
+    def test_auth_session_device(self):
+        user = u'vinicius_{0}'.format(randint(0, 9999))
+        name = u'Vinícius Cainelli'
+        mobile_number = raw_input('Type the mobile number with DDI and DDD (eg: 551681813981): ')
+        user_ip = '127.0.0.1'
+        user_agent = 'iphone'
+
+        response = self.pontopass.user.add(user=user, name=name)
+
+        self.assertTrue(response.id)
+        self.assertTrue(isinstance(response, Object))
+
+        self.users_to_remove.append(user)
+
+        response2 = self.pontopass.user(user).device.add(Pontopass.SMS, mobile_number, 'desc_{0}'.format(randint(0, 9999)))
+
+        self.assertTrue(response2.method_id)
+        self.assertTrue(isinstance(response2, Object))
+
+        response3 = self.pontopass.user(user).device.list()
+
+        self.assertTrue(isinstance(response3, list))
+        self.assertTrue(response3)
+
+        response4 = self.pontopass.session.init(user, user_ip=user_ip, user_agent=user_agent)
+        self.assertTrue(response4)
+
+        session_id = response4
+
+        response5 = self.pontopass.session(session_id).device.list(user_ip=user_ip, user_agent=user_agent)
+        for device in response5:
+            response6 = self.pontopass.session(session_id).device.ask(device_id=device.id, user_ip=user_ip, user_agent=user_agent)
+            self.assertTrue(response6)
+
+            answer = raw_input('Answer: ')
+            response7 = self.pontopass.session(session_id).device.answer(code=answer, type=Pontopass.SMS, user_ip=user_ip, user_agent=user_agent)
+
+            self.assertTrue(isinstance(response7, Object))
+            self.assertTrue(response7)
+
+            response8 = self.pontopass.session.auth(session_id=session_id, user_ip=user_ip, user_agent=user_agent)
+
+            self.assertEqual(response8.status, 0)
+            self.assertEqual(response8.user, user)
+            self.assertTrue(isinstance(response8, Object))

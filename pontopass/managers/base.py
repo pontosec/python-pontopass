@@ -49,10 +49,12 @@ class Manager(object):
 
     def parse_status(self, status):
         status_map = (
+            ([150], exceptions.SessionError),
             ([151], exceptions.UserAlreadyExists),
             ([152], exceptions.UserAddingError),
             ([153], exceptions.UserDeletingError),
             ([154], exceptions.UserDoesNotExist),
+            ([810, 820, 830, 840], exceptions.LoginError),
         )
 
         for status_list, ret in status_map:
