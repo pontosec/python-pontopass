@@ -353,8 +353,6 @@ class ClientTestCase(unittest.TestCase):
             self.assertTrue(isinstance(response7, Object))
             self.assertTrue(response7)
 
-            response8 = self.pontopass.session.auth(session_id=session_id, user_ip=user_ip, user_agent=user_agent)
+            response8 = self.pontopass.session.check(user=user, session_id=session_id, user_ip=user_ip, user_agent=user_agent)
 
-            self.assertEqual(response8.status, 0)
-            self.assertEqual(response8.user, user)
-            self.assertTrue(isinstance(response8, Object))
+            self.assertEqual(response8, True)

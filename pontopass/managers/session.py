@@ -13,14 +13,6 @@ class SessionManager(Manager):
 
         return obj.session
 
-    def auth(self, session_id, user_ip, user_agent):
-        frags = ['auth', session_id, user_ip, user_agent]
-
-        obj = self.request(frags=frags)
-        self.parse_status(obj.status)
-
-        return obj
-
     def status(self, session_id, user_ip, user_agent):
         frags = ['status', session_id, user_ip, user_agent]
 
@@ -28,6 +20,16 @@ class SessionManager(Manager):
         self.parse_status(obj.status)
 
         return obj
+
+    def check(self, user, session_id, user_ip, user_agent):
+        frags = ['status', session_id, user_ip, user_agent]
+
+        obj = self.request(frags=frags)
+        self.parse_status(obj.status)
+
+        if obj.status == 0 and user == obj.user:
+            return True
+        return False
 
     def __call__(self, id):
         self.id = id
