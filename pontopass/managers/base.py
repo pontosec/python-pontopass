@@ -1,7 +1,7 @@
 # coding: utf-8
 import requests
 from pontopass.utils import dict2obj, url_join
-from pontopass import exceptions
+from pontopass.exceptions import PontopassException
 
 
 class Manager(object):
@@ -48,20 +48,7 @@ class Manager(object):
         return self.parse_dict(data)
 
     def parse_status(self, status):
-        status_map = (
-            ([150], exceptions.SessionError),
-            ([151], exceptions.UserAlreadyExists),
-            ([152], exceptions.UserAddingError),
-            ([153], exceptions.UserDeletingError),
-            ([154], exceptions.UserDoesNotExist),
-            ([810, 820, 830, 840], exceptions.LoginError),
-        )
-
-        for status_list, ret in status_map:
-            if status in status_list:
-                raise ret()
-
-        return True
+        PontopassException.get(status)
 
     def build_path(self, frags):
         return url_join(*frags)

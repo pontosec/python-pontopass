@@ -6,7 +6,9 @@ class UserManager(Manager):
 
     user = None
 
-    def add(self, user, name=None):
+    def add(self, name=None, user=None):
+        user = user or self.user
+
         frags = ['manage', 'user', 'insert', user]
         if name is not None:
             frags += [name]
@@ -15,15 +17,13 @@ class UserManager(Manager):
         self.parse_status(obj.status)
         return obj
 
-    def delete(self, user):
+    def delete(self, user=None):
+        user = user or self.user
+        
         frags = ['manage', 'user', 'delete', user]
         obj = self.request(frags=frags)
         self.parse_status(obj.status)
-
-        if obj.status == 0:
-            return True
-
-        return False
+        return True
 
     def __call__(self, user):
         self.user = user

@@ -10,6 +10,8 @@ from pontopass import exceptions
 PONTOPASS_API_USER = os.getenv('PONTOPASS_API_USER')
 PONTOPASS_API_PASSWORD = os.getenv('PONTOPASS_API_PASSWORD')
 
+MOBILE_NUMBER = os.getenv('MOBILE_NUMBER')
+
 
 class ClientTestCase(unittest.TestCase):
 
@@ -73,7 +75,7 @@ class ClientTestCase(unittest.TestCase):
     def test_delete_invalid_user(self):
         user = u'vinicius_{0}'.format(randint(0, 9999))
 
-        with self.assertRaises(exceptions.UserDoesNotExist):
+        with self.assertRaises(exceptions.UserNotFound):
             self.pontopass.user.delete(user=user)
 
     def test_add_device(self):
@@ -234,7 +236,7 @@ class ClientTestCase(unittest.TestCase):
     def test_answer_session_device(self):
         user = u'vinicius_{0}'.format(randint(0, 9999))
         name = u'Vinícius Cainelli'
-        mobile_number = raw_input('Type the mobile number with DDI and DDD (eg: 551681813981): ')
+        mobile_number = MOBILE_NUMBER or raw_input('Type the mobile number with DDI and DDD (eg: 551681813981): ')
         user_ip = '127.0.0.1'
         user_agent = 'iphone'
 

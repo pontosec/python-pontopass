@@ -9,11 +9,7 @@ class DeviceManager(Manager):
     session_id = None
 
     def add(self, type, value, description='', user=None):
-        if not (user or self.user):
-            raise TypeError(u'please send the user param')
-
-        if not user:
-            user = self.user
+        user = user or self.user
 
         frags = ['manage', 'method', 'insert', user, type, value, description]
 
@@ -36,11 +32,7 @@ class DeviceManager(Manager):
             return self._list_by_session(*args, **kwargs)
 
     def delete(self, device_id, user=None):
-        if not (user or self.user):
-            raise TypeError(u'please send the user param')
-
-        if not user:
-            user = self.user
+        user = user or self.user
 
         frags = ['manage', 'method', 'delete', user, device_id]
 
@@ -55,9 +47,6 @@ class DeviceManager(Manager):
     def ask(self, device_id, user_ip, user_agent, session_id=None):
         session_id = session_id or self.session_id
 
-        if not session_id:
-            raise TypeError(u'please send the session_id param')
-
         frags = ['ask', session_id, device_id, user_ip, user_agent]
         obj = self.request(frags=frags)
         self.parse_status(obj.status)
@@ -69,6 +58,7 @@ class DeviceManager(Manager):
 
     def answer(self, code, type, user_ip, user_agent, session_id=None):
         session_id = session_id or self.session_id
+
         type_dict = {
             Pontopass.PHONE_CALL: 'telefone',
             Pontopass.SMS: 'sms',
@@ -77,9 +67,6 @@ class DeviceManager(Manager):
         }
 
         type = type_dict.get(int(type))
-
-        if not session_id:
-            raise TypeError(u'please send the session_id param')
 
         frags = ['validate', type, session_id, code, user_ip, user_agent]
         obj = self.request(frags=frags)
