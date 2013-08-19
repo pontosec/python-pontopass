@@ -34,6 +34,17 @@ class ClientTestCase(unittest.TestCase):
 
             cls.pontopass.user.delete(user=user)
 
+    def _get_mobile_number(self):
+        if hasattr(self, 'mobile_number'):
+            return self.mobile_number
+
+        if MOBILE_NUMBER:
+            self.mobile_number = MOBILE_NUMBER
+        else:
+            self.mobile_number = raw_input('Type the mobile number with DDI and DDD (eg: 551681813981): ')
+        
+        return self.mobile_number
+
     def test_add_valid_user(self):
         user = u'vinicius_{0}'.format(randint(0, 9999))
         name = u'Vinícius Cainelli'
@@ -236,7 +247,7 @@ class ClientTestCase(unittest.TestCase):
     def test_answer_session_device(self):
         user = u'vinicius_{0}'.format(randint(0, 9999))
         name = u'Vinícius Cainelli'
-        mobile_number = MOBILE_NUMBER or raw_input('Type the mobile number with DDI and DDD (eg: 551681813981): ')
+        mobile_number = self._get_mobile_number()
         user_ip = '127.0.0.1'
         user_agent = 'iphone'
 
@@ -311,14 +322,14 @@ class ClientTestCase(unittest.TestCase):
             response6 = self.pontopass.session(session_id).device.ask(device_id=device.id, user_ip=user_ip, user_agent=user_agent)
             self.assertTrue(response6)
 
-            with self.assertRaises(exceptions.LoginError):
+            with self.assertRaises(exceptions.WrongAnswer):
                 answer = '123123'  # wrong
                 self.pontopass.session(session_id).device.answer(code=answer, type=Pontopass.SMS, user_ip=user_ip, user_agent=user_agent)
 
     def test_auth_session_device(self):
         user = u'vinicius_{0}'.format(randint(0, 9999))
         name = u'Vinícius Cainelli'
-        mobile_number = raw_input('Type the mobile number with DDI and DDD (eg: 551681813981): ')
+        mobile_number = self._get_mobile_number()
         user_ip = '127.0.0.1'
         user_agent = 'iphone'
 

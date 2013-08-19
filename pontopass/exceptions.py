@@ -9,6 +9,7 @@ class PontopassException(Exception):
 
     @classmethod
     def get(self, id, *args, **kwargs):
+        print id
         id = int(id)
         if id in ERRORS:
             raise ERRORS[id](*args, **kwargs)
@@ -75,6 +76,10 @@ class ErrorOnCall(PontopassException):
     pass
 
 
+class WrongAnswer(PontopassException):
+    pass
+
+
 ERRORS = {
     20: StartError,
     30: InvalidCredentials,
@@ -108,7 +113,7 @@ ERRORS = {
     600: InsufficientCredits,
     710: LoginError,
     720: InvalidData,
-    810: LoginInactive,
+    810: WrongAnswer,
     820: LoginInactive,
     830: LoginInactive,
     840: LoginInactive,
