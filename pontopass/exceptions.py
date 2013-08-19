@@ -9,7 +9,6 @@ class PontopassException(Exception):
 
     @classmethod
     def get(self, id, *args, **kwargs):
-        print id
         id = int(id)
         if id in ERRORS:
             raise ERRORS[id](*args, **kwargs)
