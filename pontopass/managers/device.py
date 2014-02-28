@@ -63,7 +63,8 @@ class DeviceManager(Manager):
             Pontopass.PHONE_CALL: 'telefone',
             Pontopass.SMS: 'sms',
             Pontopass.MOBILE_TOKEN: 'token',
-            Pontopass.MOBILE_AUTHENTICATION: 'app'
+            Pontopass.MOBILE_AUTHENTICATION: 'app',
+			Pontopass.WHATSAPP: 'whatsapp'
         }
 
         type = type_dict.get(int(type))

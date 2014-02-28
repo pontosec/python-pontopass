@@ -7,7 +7,8 @@ class Pontopass(object):
     SMS = 2
     MOBILE_TOKEN = 3
     MOBILE_AUTHENTICATION = MOBILE_AUTH = 4
-
+	WHATSAPP = 5
+	
     WITHOUT_WIDGET = 0
     WITH_WIDGET = 1
 
