@@ -22,7 +22,7 @@ class SessionManager(Manager):
         return obj
 
     def check(self, user, session_id, user_ip, user_agent):
-        frags = ['status', session_id, user_ip, user_agent]
+        frags = ['check', session_id, user_ip, user_agent]
 
         obj = self.request(frags=frags)
         self.parse_status(obj.status)
